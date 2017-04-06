@@ -1,13 +1,26 @@
+import Foundation
 import Vapor
+import HTTP
+import Jarvis
 
-let drop = Droplet()
+let server = JarvisServer.main.server
 
-drop.get { req in
-    return try drop.view.make("welcome", [
-    	"message": drop.localization[req.lang, "welcome", "title"]
+server.get { req in
+    return try server.view.make("welcome", [
+    	"message": server.localization[req.lang, "welcome", "title"]
     ])
 }
 
-drop.resource("posts", PostController())
+server.post("api", ":version") { (request) -> ResponseRepresentable in
+    guard
+        let versionString = request.parameters["version"]?.string,
+        let version = APIVersion(rawValue: versionString) else {
+            throw Abort.badRequest
+    }
+    
+    return try JarvisServer.main.handle(request: request, version: version)
+}
 
-drop.run()
+server.resource("posts", PostController())
+
+server.run()
