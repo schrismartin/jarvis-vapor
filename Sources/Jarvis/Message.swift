@@ -29,3 +29,13 @@ extension Message: JSONConvertible {
         self.content = text
     }
 }
+
+extension Message: Hashable {
+    var hashValue: Int {
+        return content.hashValue
+    }
+    
+    static func == (lhs: Message, rhs: Message) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+}

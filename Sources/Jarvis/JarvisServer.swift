@@ -21,21 +21,42 @@ public class JarvisServer {
         return server
     }()
     
-    public func handle(request: Request, version: APIVersion = .v1) throws -> Response {
+    public func handle(request: Request, version: APIVersion) throws -> Response {
         guard let json = request.json, let postback = try? Postback(json: json) else {
-            Utils.log("Unable to convert received payload to Postback")
+            Debug.log("Unable to convert received payload to Postback")
             throw Abort.badRequest
         }
         
-        if postback.user.type == "user" {
-            let message = try Bot.current.performActions(from: postback, version: version)
-            let url = URL(from: .posts)
-            post(body: try message.makeJSON(), to: url)
-        } else {
-            Utils.log("Non-user message detected, ignoring")
+        do {
+            switch postback.user.type {
+            case .user: try handleUserPostback(using: postback, version: version)
+            case .bot: try handleBotPostback(using: postback, version: version)
+            default: break
+            }
+            
+            return Response(status: .ok)
+        } catch let error as JarvisError {
+            Debug.log("Jarvis-related error received when handling postback. Error: \(error), Postback: \(postback)")
+            return Response(status: .internalServerError)
         }
         
-        return Response(status: .ok)
+    }
+    
+    func handleUserPostback(using postback: Postback, version: APIVersion) throws {
+        Debug.log("User postback detected, continuing")
+        let action = try Bot.current.generateAction(using: postback, version: version)
+        
+        switch action {
+        case .messageSent(message: let message):
+            let url = URL(from: .posts)
+            post(body: try message.makeJSON(), to: url)
+        default:
+            break
+        }
+    }
+    
+    func handleBotPostback(using postback: Postback, version: APIVersion) throws {
+        Debug.log("Bot postback detected, payload discarded")
     }
     
     @discardableResult

@@ -15,26 +15,23 @@ class Bot {
     public static var current = Bot()
     public var id: String = Utils.getEnvVar(name: "BOT_ID") ?? "7b88634725687b654b8293117e"
     
-    internal func performActions(from postback: Postback, version: APIVersion) throws -> Message {
+    
+    
+    /**
+     Perform relevant actions associated with generating a response to the user.
+     - parameter postback: Postback payload returned by GroupMe
+     - parameter version: API Version used in the call.
+     - returns: `Message` containing feedback, if feedback is required, `nil` otherwise.
+     */
+    internal func generateAction(using postback: Postback, version: APIVersion) throws -> Action {
+        
         switch version {
-        case .v1: return generateV1Content(from: postback)
+        case .v1: return V1.generateAction(using: postback)
         default:
-            Utils.log("Received API Call targeting \(version.rawValue)")
+            Debug.log("Received API Call targeting \(version.rawValue)")
             throw JarvisError.incorrectVersion
         }
     }
-}
-
-extension Bot {
-    
-    fileprivate func generateV1Content(from postback: Postback) -> Message {
-        
-        let description = String(describing: postback)
-        Utils.log(description)
-        
-        return Message(content: "Echo: \(postback.message)")
-    }
-    
 }
 
 
@@ -43,13 +40,13 @@ extension Bot {
     
     public func send(message: Message) throws {
         // Create JSON Payload
-        Utils.log("Message preparing to be created")
+        Debug.log("Message preparing to be created")
         let json = try message.makeJSON()
         let url = URL(from: .posts)
-        Utils.log("Message successfully created")
+        Debug.log("Message successfully created")
         
         // Send
-        Utils.log("Message attempting to post")
+        Debug.log("Message attempting to post")
         
         JarvisServer.main.post(body: json, to: url)
     }

@@ -36,3 +36,9 @@ public enum APIVersion: String {
     case v4
     case v5
 }
+
+enum Action {
+    case messageSent(message: Message)
+    case messageStored
+    case none
+}

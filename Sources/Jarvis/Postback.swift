@@ -13,11 +13,25 @@ public typealias GroupIdentifier = String
 public typealias MessageIdentifier = String
 public typealias UserIdentifier = String
 
+public enum UserType: String {
+    case user
+    case bot
+    case other
+    
+    public init(rawValue: String) {
+        switch rawValue {
+        case "user": self = .user
+        case "bot": self = .bot
+        default: self = .other
+        }
+    }
+}
+
 public struct User {
     public var id: UserIdentifier
     public var name: String
     public var avatarUrl: URL
-    public var type: String
+    public var type: UserType
 }
 
 public struct GMGroup {
@@ -60,12 +74,12 @@ extension Postback: JSONInitializable {
             throw JarvisError.urlCreation(urlSource: avatarUrl)
         }
         
-        Utils.log("Sender type: \(senderType)")
+        Debug.log("Sender type: \(senderType)")
         self.user = User(
             id: userId,
             name: name,
             avatarUrl: url,
-            type: senderType
+            type: UserType(rawValue: senderType)
         )
     }
     
