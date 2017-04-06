@@ -27,9 +27,13 @@ public class JarvisServer {
             throw Abort.badRequest
         }
         
-        let message = try Bot.current.performActions(from: postback, version: version)
-        let url = URL(from: .posts)
-        post(body: try message.makeJSON(), to: url)
+        if postback.user.type == "user" {
+            let message = try Bot.current.performActions(from: postback, version: version)
+            let url = URL(from: .posts)
+            post(body: try message.makeJSON(), to: url)
+        } else {
+            Utils.log("Non-user message detected, ignoring")
+        }
         
         return Response(status: .ok)
     }

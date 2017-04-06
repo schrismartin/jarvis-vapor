@@ -17,6 +17,7 @@ public struct User {
     public var id: UserIdentifier
     public var name: String
     public var avatarUrl: URL
+    public var type: String
 }
 
 public struct GMGroup {
@@ -44,6 +45,7 @@ extension Postback: JSONInitializable {
             let groupId = json["group_id"]?.string,
             let id = json["id"]?.string,
             let name = json["name"]?.string,
+            let senderType = json["sender_type"]?.string,
             let _ = json["sender_id"]?.string,
             let text = json["text"]?.string,
             let userId = json["user_id"]?.string
@@ -58,10 +60,12 @@ extension Postback: JSONInitializable {
             throw JarvisError.urlCreation(urlSource: avatarUrl)
         }
         
+        Utils.log("Sender type: \(senderType)")
         self.user = User(
             id: userId,
             name: name,
-            avatarUrl: url
+            avatarUrl: url,
+            type: senderType
         )
     }
     
