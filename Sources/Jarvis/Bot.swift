@@ -14,8 +14,7 @@ class Bot {
     
     public static var current = Bot()
     public var id: String = Utils.getEnvVar(name: "BOT_ID") ?? "7b88634725687b654b8293117e"
-    
-    
+    public var name: String = Utils.getEnvVar(name: "BOT_NAME") ?? "Jarvis"
     
     /**
      Perform relevant actions associated with generating a response to the user.

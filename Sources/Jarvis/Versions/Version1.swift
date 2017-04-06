@@ -15,7 +15,7 @@ enum Command {
     
     init?(input: String) {
         var commands = input.components(separatedBy: " ")
-        guard commands.remove(at: 0).lowercased() == "jarvis" else {
+        guard commands.remove(at: 0).lowercased() == Bot.current.name.lowercased() else {
             return nil
         }
         
