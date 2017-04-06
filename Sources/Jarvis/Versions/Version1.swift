@@ -8,6 +8,32 @@
 
 import Foundation
 
+enum Command {
+    case echo(body: String)
+    case unrecognized(command: String)
+    case error(message: String)
+    
+    init?(input: String) {
+        var commands = input.components(separatedBy: " ")
+        guard commands.remove(at: 0).lowercased() == "jarvis" else {
+            return nil
+        }
+        
+        guard commands.count > 0 else {
+            self = .error(message: "usage: jarvis command [args]")
+            return
+        }
+        
+        let command = commands.remove(at: 0)
+        switch command {
+        case "echo":
+            self = .echo(body: commands.joined(separator: " "))
+        default:
+            self = .unrecognized(command: command)
+        }
+    }
+}
+
 class V1 {
     
     // Program should not be initialized
@@ -15,11 +41,22 @@ class V1 {
     
     internal static func generateAction(using postback: Postback) -> Action {
         
-        let description = String(describing: postback)
-        Debug.log(description)
+        guard let command = Command(input: postback.message) else {
+            Debug.log("User did not invoke the \"jarvis\" keyword")
+            return Action.none
+        }
         
-        let message = Message(content: "Echo: \(postback.message)")
-        return Action.messageSent(message: message)
+        switch command {
+        case .echo(body: let body):
+            let message = Message(content: "Echo: \(body)")
+            return Action.messageSent(message: message)
+        case .unrecognized(command: let command):
+            let message = Message(content: "Unrecognized command: \(command)")
+            return Action.messageSent(message: message)
+        case .error(message: let input):
+            let message = Message(content: input)
+            return Action.messageSent(message: message)
+        }
     }
     
 }

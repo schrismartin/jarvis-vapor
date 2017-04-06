@@ -58,10 +58,14 @@ public class JarvisServer {
     func handleBotPostback(using postback: Postback, version: APIVersion) throws {
         Debug.log("Bot postback detected, payload discarded")
     }
-    
+}
+
+extension JarvisServer {
+
     @discardableResult
     func post(body: BodyRepresentable, headers: [HeaderKey: String] = ["Content-Type": "application/json"], to url: URL) -> Response? {
         let client = server.client
         return try? client.post(url.absoluteString, headers: headers, body: body)
     }
+    
 }
