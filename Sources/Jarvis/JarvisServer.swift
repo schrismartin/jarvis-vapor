@@ -33,6 +33,8 @@ public class JarvisServer {
             throw Abort.badRequest
         }
         
+        dump(postback)
+        
         do {
             switch postback.user.type {
             case .user: try handleUserPostback(using: postback, version: version)

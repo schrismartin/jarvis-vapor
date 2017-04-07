@@ -46,3 +46,12 @@ extension Array {
     }
     
 }
+
+extension String {
+    func substring(at start: Int, length: Int) -> String {
+        let low = index(startIndex, offsetBy: start)
+        let high = index(startIndex, offsetBy: start + length)
+        let range = Range(uncheckedBounds: (low, high))
+        return substring(with: range)
+    }
+}

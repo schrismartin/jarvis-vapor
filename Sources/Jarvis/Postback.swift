@@ -88,7 +88,63 @@ public struct GMGroup {
     }
 }
 
+enum AttachmentType: String {
+    case mentions
+}
+
+public struct Attachment {
+    var type: AttachmentType
+    var users: [User]?
+}
+
+extension Attachment {
+    public init(json: JSON, message: String) throws {
+        guard
+            let str = json["type"]?.string,
+            let type = AttachmentType(rawValue: str) else {
+            throw JarvisError.jsonConversion
+        }
+        
+        self.type = type
+        
+        switch self.type {
+        case .mentions:
+            users = try? Attachment.extractMentions(using: json, from: message)
+        }
+    }
+    
+    static func extractMentions(using json: JSON, from message: String) throws -> [User] {
+        // Seed the users array
+        var users = [User]()
+        
+        // Extract the loci variable
+        guard let loci = json["loci"]?.array as? [JSON],
+            let userIds = json["user_ids"]?.array as? [JSON] else { throw JarvisError.jsonConversion }
+        
+        // Iterate through the loci array
+        for (index, element) in loci.enumerated() {
+            guard let rawRange = element.array as? [JSON] else { continue }
+            
+            // Grab username substring while stripping the @ symbol
+            let username = message.substring(
+                at: rawRange[0].int! + 1,
+                length: rawRange[1].int! - 1
+            )
+            
+            // Extract the id and create the user
+            let id = userIds[index].string!
+            let user = User(id: id, name: username)
+            
+            // Add to the user list
+            users.append(user)
+        }
+        
+        return users
+    }
+}
+
 public struct Postback {
+    public var attachments: [Attachment]
     public var created: Date
     public var group: GMGroup
     public var id: MessageIdentifier
@@ -100,6 +156,7 @@ extension Postback: JSONInitializable {
     
     public init(json: JSON) throws {
         guard
+            let attachments = json["attachments"]?.array as? [JSON],
             let avatarUrl = json["avatar_url"]?.string,
             let createdAt = json["created_at"]?.int,
             let groupId = json["group_id"]?.string,
@@ -111,6 +168,7 @@ extension Postback: JSONInitializable {
             let userId = json["user_id"]?.string
             else { throw JarvisError.jsonConversion }
         
+        self.attachments = attachments.flatMap { try? Attachment(json: $0, message: text) }
         self.created = Date(timeIntervalSince1970: TimeInterval(createdAt))
         self.group = GMGroup(from: groupId)
         self.id = id
