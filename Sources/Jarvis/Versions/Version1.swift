@@ -11,27 +11,38 @@ import Foundation
 enum Command {
     case echo(body: String)
     case unrecognized(command: String)
-    case error(message: String)
+    case usage(info: String)
+    case help
+    case info(arg: InfoArg)
     
     init?(input: String) {
         var commands = input.components(separatedBy: " ")
-        guard commands.remove(at: 0).lowercased() == Bot.current.name.lowercased() else {
-            return nil
-        }
         
-        guard commands.count > 0 else {
-            self = .error(message: "usage: jarvis command [args]")
+        guard commands.popFirst()?.lowercased() == Bot.current.name.lowercased() else { return nil }
+        guard let command = commands.popFirst()?.lowercased() else {
+            self = .usage(info: "commmand [args]\nUse \"jarvis help\" for a full list of commands.")
             return
         }
         
-        let command = commands.remove(at: 0)
         switch command {
-        case "echo":
-            self = .echo(body: commands.joined(separator: " "))
-        default:
-            self = .unrecognized(command: command)
+        case "echo": self = .echo(body: commands.joined(separator: " "))
+        case "help": self = .help
+        case "info":
+            guard let first = commands.popFirst(), let arg = InfoArg(rawValue: first) else {
+                self = .usage(info: "info [members/age/messages]")
+                return
+            }
+            
+            self = .info(arg: arg)
+        default: self = .unrecognized(command: command)
         }
     }
+}
+
+enum InfoArg: String {
+    case members
+    case age
+    case messages
 }
 
 class V1 {
@@ -53,9 +64,28 @@ class V1 {
         case .unrecognized(command: let command):
             let message = Message(content: "Unrecognized command: \(command)")
             return Action.messageSent(message: message)
-        case .error(message: let input):
-            let message = Message(content: input)
+        case .usage(let info):
+            let message = Message(content: "usage: jarvis \(info)")
             return Action.messageSent(message: message)
+        case .help:
+            let message = Message.welcome
+            return Action.messageSent(message: message)
+        case .info(let arg):
+            do {
+                let info = try GroupInfo(from: GroupInfo.url)
+                switch arg {
+                case .age:
+                    return Action.messageSent(message: Message(content: "This group was created at \(info.createdAt)."))
+                case .members:
+                    let members = info.members.map { $0.name }.joined(separator: "\n- ")
+                    return Action.messageSent(message: Message(content: "This group has \(info.members.count) members:\n- " + members))
+                case .messages:
+                    return Action.messageSent(message: Message(content: "This group has sent/received \(info.messageCount) messages."))
+                }
+            } catch {
+                let message = Message.failed
+                return Action.messageSent(message: message)
+            }
         }
     }
     

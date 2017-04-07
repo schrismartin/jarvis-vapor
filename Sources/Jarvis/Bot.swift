@@ -15,6 +15,12 @@ class Bot {
     public static var current = Bot()
     public var id: String = Utils.getEnvVar(name: "BOT_ID") ?? "7b88634725687b654b8293117e"
     public var name: String = Utils.getEnvVar(name: "BOT_NAME") ?? "Jarvis"
+    public var groupId: String = Utils.getEnvVar(name: "GROUP_ID") ?? "30120063"
+    public var accessToken: String = Utils.getEnvVar(name: "ACCESS_TOKEN") ?? "gmjMqLSZfV1NuAvsDY0VrmIUG2Vco9UMyQgH89NK"
+    
+    private init () {
+        // Should only be called by the singleton instance (Bot.current)
+    }
     
     /**
      Perform relevant actions associated with generating a response to the user.

@@ -39,3 +39,19 @@ extension Message: Hashable {
         return lhs.hashValue == rhs.hashValue
     }
 }
+
+extension Message {
+    public static var usage: Message {
+        return Message(content: "usage: jarvis commmand [args]\nUse \"jarvis help\" for a full list of commands.")
+    }
+    
+    public static var failed: Message {
+        return Message(content: "The command you just performed caused an error. Try again layer.")
+    }
+    
+    public static var welcome: Message {
+        return Message(content: "Welcome to Jarvis! You can currently use the following commands by invoking \"jarvis command [args]\"\n\n" +
+            "echo: Echo the rest of the message to the screen\n" +
+            "help: List of commands you can use with Jarvis")
+    }
+}

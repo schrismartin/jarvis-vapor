@@ -8,9 +8,22 @@
 
 import Foundation
 
-enum URLs: String {
-    case root = "https://api.groupme.com/v3"
-    case posts = "https://api.groupme.com/v3/bots/post"
+enum URLs {
+    case root
+    case posts
+    case groups
+    
+    var rawValue: String {
+        switch self {
+        case .root: return "https://api.groupme.com/v3"
+        case .posts: return "https://api.groupme.com/v3/bots/post"
+        case .groups: return "https://api.groupme.com/v3/groups/\(Bot.current.groupId)"
+        }
+    }
+    
+    func tokenized() -> String {
+        return "\(self.rawValue)?token=\(Bot.current.accessToken)"
+    }
 }
 
 extension URL {

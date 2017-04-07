@@ -38,3 +38,11 @@ public struct Debug {
     }
     
 }
+
+extension Array {
+    
+    mutating func popFirst() -> Element? {
+        return count > 0 ? remove(at: 0) : nil
+    }
+    
+}

@@ -22,6 +22,12 @@ public class JarvisServer {
     }()
     
     public func handle(request: Request, version: APIVersion) throws -> Response {
+        // Debug information
+        if let bytes = request.body.bytes {
+            let data = Data(bytes: bytes)
+            Debug.log(String(data: data, encoding: .utf8)!)
+        }
+        
         guard let json = request.json, let postback = try? Postback(json: json) else {
             Debug.log("Unable to convert received payload to Postback")
             throw Abort.badRequest
@@ -49,7 +55,8 @@ public class JarvisServer {
         switch action {
         case .messageSent(message: let message):
             let url = URL(from: .posts)
-            post(body: try message.makeJSON(), to: url)
+//            post(body: try message.makeJSON(), to: url)
+            Debug.log(message.content)
         default:
             break
         }
@@ -66,6 +73,11 @@ extension JarvisServer {
     func post(body: BodyRepresentable, headers: [HeaderKey: String] = ["Content-Type": "application/json"], to url: URL) -> Response? {
         let client = server.client
         return try? client.post(url.absoluteString, headers: headers, body: body)
+    }
+    
+    func get(from url: URL) -> Response? {
+        let client = server.client
+        return try? client.get(url.absoluteString)
     }
     
 }
