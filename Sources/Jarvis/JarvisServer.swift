@@ -55,8 +55,7 @@ public class JarvisServer {
         switch action {
         case .messageSent(message: let message):
             let url = URL(from: .posts)
-//            post(body: try message.makeJSON(), to: url)
-            Debug.log(message.content)
+            post(body: try message.makeJSON(), to: url)
         default:
             break
         }
