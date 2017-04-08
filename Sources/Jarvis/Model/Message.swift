@@ -17,7 +17,7 @@ extension Message: JSONConvertible {
     func makeJSON() throws -> JSON {
         return JSON([
             "text": Node(content),
-            "bot_id": Node(Bot.current.id)
+            "bot_id": Node(BotService.current.id)
         ])
     }
     

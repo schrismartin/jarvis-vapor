@@ -17,12 +17,12 @@ enum URLs {
         switch self {
         case .root: return "https://api.groupme.com/v3"
         case .posts: return "https://api.groupme.com/v3/bots/post"
-        case .groups: return "https://api.groupme.com/v3/groups/\(Bot.current.groupId)"
+        case .groups: return "https://api.groupme.com/v3/groups/\(BotService.current.groupId)"
         }
     }
     
     func tokenized() -> String {
-        return "\(self.rawValue)?token=\(Bot.current.accessToken)"
+        return "\(self.rawValue)?token=\(BotService.current.accessToken)"
     }
 }
 

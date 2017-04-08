@@ -1,6 +1,6 @@
-# Basic Template
+# Jarvis
 
-A basic vapor template for starting a new Vapor web application. If you're using vapor toolbox, you can use: `vapor new --template=basic`
+Jarvis is a bot made with the intention of providing additonal functionality to the GroupMe group messaging platform. 
 
 ## 📖 Documentation
 
