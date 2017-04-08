@@ -1,0 +1,292 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Attachment.swift",
+      "line": null,
+      "symbol": "Attachment",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Attachment.swift",
+      "line": 16,
+      "symbol": "Attachment",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Attachment.swift",
+      "line": 22,
+      "symbol": "Attachment.init(json:message:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Group.swift",
+      "line": 12,
+      "symbol": "Group",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Group.swift",
+      "line": 13,
+      "symbol": "Group.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Group.swift",
+      "line": 15,
+      "symbol": "Group.init(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Message.swift",
+      "line": null,
+      "symbol": "Message",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Message.swift",
+      "line": 44,
+      "symbol": "Message.usage",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Message.swift",
+      "line": 48,
+      "symbol": "Message.failed",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Message.swift",
+      "line": 52,
+      "symbol": "Message.welcome",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Postback.swift",
+      "line": null,
+      "symbol": "Postback",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Postback.swift",
+      "line": 17,
+      "symbol": "Postback",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Postback.swift",
+      "line": 18,
+      "symbol": "Postback.attachments",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Postback.swift",
+      "line": 19,
+      "symbol": "Postback.created",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Postback.swift",
+      "line": 20,
+      "symbol": "Postback.group",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Postback.swift",
+      "line": 21,
+      "symbol": "Postback.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Postback.swift",
+      "line": 22,
+      "symbol": "Postback.user",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Postback.swift",
+      "line": 23,
+      "symbol": "Postback.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/Postback.swift",
+      "line": 28,
+      "symbol": "Postback.init(json:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/User.swift",
+      "line": null,
+      "symbol": "User",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/User.swift",
+      "line": 14,
+      "symbol": "UserType",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/User.swift",
+      "line": 15,
+      "symbol": "UserType.user",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/User.swift",
+      "line": 16,
+      "symbol": "UserType.bot",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/User.swift",
+      "line": 17,
+      "symbol": "UserType.other",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/User.swift",
+      "line": 28,
+      "symbol": "User",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/User.swift",
+      "line": 29,
+      "symbol": "User.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/User.swift",
+      "line": 30,
+      "symbol": "User.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/User.swift",
+      "line": 31,
+      "symbol": "User.avatarUrl",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/User.swift",
+      "line": 32,
+      "symbol": "User.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/User.swift",
+      "line": 33,
+      "symbol": "User.muted",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/User.swift",
+      "line": 51,
+      "symbol": "User.init(json:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Model/User.swift",
+      "line": 69,
+      "symbol": "User.makeJSON()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Services/Bot.swift",
+      "line": null,
+      "symbol": "BotService",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Utilities/Constants.swift",
+      "line": 45,
+      "symbol": "APIVersion",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Utilities/Constants.swift",
+      "line": 46,
+      "symbol": "APIVersion.v1",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Utilities/Constants.swift",
+      "line": 47,
+      "symbol": "APIVersion.v2",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Utilities/Constants.swift",
+      "line": 48,
+      "symbol": "APIVersion.v3",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Utilities/Constants.swift",
+      "line": 49,
+      "symbol": "APIVersion.v4",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Utilities/Constants.swift",
+      "line": 50,
+      "symbol": "APIVersion.v5",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Utilities/Utils.swift",
+      "line": 18,
+      "symbol": "Utils",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/schrismartin/Projects/bots/jarvis-vapor/Sources/Jarvis/Utilities/Utils.swift",
+      "line": 39,
+      "symbol": "Debug",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/schrismartin/Projects/bots/jarvis-vapor"
+}
