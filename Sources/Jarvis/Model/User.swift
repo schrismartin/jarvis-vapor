@@ -77,3 +77,10 @@ extension User: JSONConvertible {
         ])
     }
 }
+
+// Add conformance to the MessageComponent protocol
+extension User: MessageComponent {
+    var textualRepresentation: String {
+        return "@\(name)"
+    }
+}
