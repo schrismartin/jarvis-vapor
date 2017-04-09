@@ -65,7 +65,7 @@ extension Postback: JSONInitializable {
         
         // Iterate through each attachment – allows for multiple attachment handling.
         while var attachment = attachments.popLast() {
-            var newPayload = [MessagePayload]()
+            var returnedPayload = [MessagePayload]()
             
             switch attachment.type {
             case .mentions: // Perform this action if mentions are involved
@@ -76,21 +76,28 @@ extension Postback: JSONInitializable {
                     
                     // Make sure there's a user in the attachment, 
                     // and that the message length does not exceed the user's name
-                    guard let user = attachment.users?.first, component.count >= user.name.count else { continue }
-                    let substring = component.substring(at: 0, length: user.name.count)
-                    if substring == user.name {
-                        attachment.users?.popFirst()
-                        let other = component.substring(at: user.name.count, length: component.count - user.name.count)
-                        var content: MessagePayload = other.components(separatedBy: " ")
-                        content.insert(user, at: 0)
-                        newPayload.append(content)
+                    if let user = attachment.users?.first, component.count >= user.name.count {
+                        let substring = component.substring(at: 0, length: user.name.count)
+                        if substring == user.name {
+                            attachment.users?.popFirst()
+                            let other = component.substring(at: user.name.count, length: component.count - user.name.count)
+                            var content: MessagePayload = other.components(separatedBy: " ")
+                            content.insert(user, at: 0)
+                            returnedPayload.append(content)
+                        } else {
+                            returnedPayload.append(component.components(separatedBy: " "))
+                        }
                     } else {
-                        newPayload.append(component.components(separatedBy: " "))
+                        returnedPayload.append(component.components(separatedBy: " "))
                     }
+                    
+//                    guard let user = attachment.users?.first, component.count >= user.name.count else { continue }
+//                     else {
+//                    }
                 }
             }
             
-            return newPayload.flatMap { $0.flatMap { return $0.description != "" ? $0 : nil } }
+            return returnedPayload.flatMap { $0.flatMap { return $0.description != "" ? $0 : nil } }
         }
         
         // if no attachments,
