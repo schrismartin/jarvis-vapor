@@ -23,12 +23,16 @@ struct Message {
     /// strings and User objects
     ///
     /// - Parameter content: Strings or User objects used to construct a message
-    init(content: MessageComponent...) {
-        self.content = content
+    init(components: MessageComponent...) {
+        self.init(payload: components)
+    }
+    
+    init(payload: MessagePayload) {
+        self.content = payload
             .map { $0.textualRepresentation }
             .joined()
         
-        for case let user as User in content {
+        for case let user as User in payload {
             mentions.append(user)
         }
     }
@@ -45,15 +49,15 @@ extension Message: ExpressibleByStringLiteral {
     typealias ExtendedGraphemeClusterLiteralType = StringLiteralType
     
     public init(stringLiteral value: StringLiteralType) {
-        self.init(content: value)
+        self.init(components: value)
     }
     
     public init(extendedGraphemeClusterLiteral value: ExtendedGraphemeClusterLiteralType) {
-        self.init(content: value)
+        self.init(components: value)
     }
     
     public init(unicodeScalarLiteral value: UnicodeScalar) {
-        self.init(content: "\(value)")
+        self.init(components: "\(value)")
     }
     
 }
@@ -92,30 +96,33 @@ extension Message: Hashable {
 
 extension Message {
     public static var usage: Message {
-        return Message(content: "usage: jarvis commmand [args]\nUse \"jarvis help\" for a full list of commands.")
+        return Message(components: "usage: jarvis commmand [args]\nUse \"jarvis help\" for a full list of commands.")
     }
     
     public static var failed: Message {
-        return Message(content: "The command you just performed caused an error. Try again layer.")
+        return Message(components: "The command you just performed caused an error. Try again layer.")
     }
     
     public static var welcome: Message {
-        return Message(content: "Welcome to Jarvis! You can currently use the following commands by invoking \"jarvis command [args]\"\n\n" +
+        return Message(components: "Welcome to Jarvis! You can currently use the following commands by invoking \"jarvis command [args]\"\n\n" +
             "echo: Echo the rest of the message to the screen\n" +
             "help: List of commands you can use with Jarvis")
     }
 }
 
-
 /// Marker protocol to allow the concatenation of Strings and
 /// users to create a message with a mention.
-protocol MessageComponent {
+public protocol MessageComponent: CustomStringConvertible {
     var textualRepresentation: String { get }
 }
 
+
+/// Collection of message components
+public typealias MessagePayload = [MessageComponent]
+
 // Make Strings confirom to the MessageComponent protocol
 extension String: MessageComponent {
-    var textualRepresentation: String {
+    public var textualRepresentation: String {
         return self
     }
 }

@@ -20,22 +20,25 @@ class V1 {
     /// - Returns: The action to be perfocmed by the bot when finished.
     internal static func generateAction(using postback: Postback) -> Action {
         
+        print(postback.message)
+        
         guard let command = Command(input: postback.message) else {
             Debug.log("User did not invoke the \"jarvis\" keyword")
             return Action.none
         }
         
         switch command {
-        case .echo(body: let body):
-            let message = Message(content: "Echo: \(body)")
+        case .echo(body: var body):
+            body.insert("Echo: ", at: 0)
+            let message = Message(payload: body)
             return Action.messageSent(message: message)
             
         case .unrecognized(command: let command):
-            let message = Message(content: "Unrecognized command: \(command)")
+            let message = Message(components: "Unrecognized command: \(command)")
             return Action.messageSent(message: message)
             
         case .usage(let info):
-            let message = Message(content: "usage: jarvis \(info)")
+            let message = Message(components: "usage: jarvis \(info)")
             return Action.messageSent(message: message)
             
         case .help:
@@ -44,12 +47,12 @@ class V1 {
             
         case .test:
             let user = User(id: "21964096", name: "Chris Martin")
-            let message = Message(content: user, ": @ctually @ll @lligators @cclimate @ll @utum. ", user)
+            let message = Message(components: user, ": @ctually @ll @lligators @cclimate @ll @utum. ", user)
             return Action.messageSent(message: message)
             
         case .fuck:
             let user = postback.user
-            let message = Message(content: "No, actually fuck you, ", user, ".")
+            let message = Message(components: "No, actually fuck you, ", user, ".")
             return Action.messageSent(message: message)
             
         case .info(let arg):
@@ -57,12 +60,12 @@ class V1 {
                 let info = try GroupInfo(from: GroupInfo.url)
                 switch arg {
                 case .age:
-                    return Action.messageSent(message: Message(content: "This group was created at \(info.createdAt)."))
+                    return Action.messageSent(message: Message(components: "This group was created at \(info.createdAt)."))
                 case .members:
                     let members = info.members.map { $0.name }.joined(separator: "\n- ")
-                    return Action.messageSent(message: Message(content: "This group has \(info.members.count) members:\n- " + members))
+                    return Action.messageSent(message: Message(components: "This group has \(info.members.count) members:\n- " + members))
                 case .messages:
-                    return Action.messageSent(message: Message(content: "This group has sent/received \(info.messageCount) messages."))
+                    return Action.messageSent(message: Message(components: "This group has sent/received \(info.messageCount) messages."))
                 }
             } catch {
                 let message = Message.failed
