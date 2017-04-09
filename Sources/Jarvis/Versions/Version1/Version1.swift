@@ -29,15 +29,29 @@ class V1 {
         case .echo(body: let body):
             let message = Message(content: "Echo: \(body)")
             return Action.messageSent(message: message)
+            
         case .unrecognized(command: let command):
             let message = Message(content: "Unrecognized command: \(command)")
             return Action.messageSent(message: message)
+            
         case .usage(let info):
             let message = Message(content: "usage: jarvis \(info)")
             return Action.messageSent(message: message)
+            
         case .help:
             let message = Message.welcome
             return Action.messageSent(message: message)
+            
+        case .test:
+            let user = User(id: "21964096", name: "Chris Martin")
+            let message = Message(content: user, ": @ctually @ll @lligators @cclimate @ll @utum. ", user)
+            return Action.messageSent(message: message)
+            
+        case .fuck:
+            let user = postback.user
+            let message = Message(content: "No, actually fuck you, ", user, ".")
+            return Action.messageSent(message: message)
+            
         case .info(let arg):
             do {
                 let info = try GroupInfo(from: GroupInfo.url)

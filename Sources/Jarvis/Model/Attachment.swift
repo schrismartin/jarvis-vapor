@@ -73,8 +73,11 @@ extension Attachment: JSONRepresentable {
         var content = content
         
         for (index, character) in content.characters.enumerated() where character == "@" {
-            guard let user = mentions.popFirst() else { continue }
-            indices.append([ index, user.textualRepresentation.count ])
+            guard let user = mentions.first else { continue }
+            if content.substring(at: index, length: user.textualRepresentation.count) == user.textualRepresentation {
+                mentions.popFirst()
+                indices.append([ index, user.textualRepresentation.count ])
+            }
         }
         
         return indices

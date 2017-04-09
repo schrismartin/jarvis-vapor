@@ -22,6 +22,8 @@ enum Command {
     case unrecognized(command: String)
     case usage(info: String)
     case help
+    case test
+    case fuck
     case info(arg: InfoArg)
     
     enum InfoArg: String {
@@ -43,6 +45,8 @@ enum Command {
         switch command {
         case "echo": self = .echo(body: commands.joined(separator: " "))
         case "help": self = .help
+        case "test": self = .test
+        case "fuck": self = .fuck
         case "info":
             guard let first = commands.popFirst(), let arg = InfoArg(rawValue: first) else {
                 self = .usage(info: "info [members/age/messages]")
