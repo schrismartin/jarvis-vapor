@@ -26,6 +26,7 @@ enum Command {
     case fuck
     case harass(user: User)
     case info(arg: InfoArg)
+    case cease
     
     enum InfoArg {
         case members
@@ -58,6 +59,7 @@ enum Command {
         case "help": self = .help
         case "test": self = .test
         case "fuck": self = .fuck
+        case "cease": self = .cease
         case "harass":
             guard let user = commands.popFirst() as? User else {
                 self = .usage(info: "harass [@user]")

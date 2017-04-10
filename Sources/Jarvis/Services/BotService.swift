@@ -45,6 +45,11 @@ class BotService {
                     let response = Message(components: "Now harassing", user)
                     return Action.messageSent(message: response)
                 }
+            case .cease:
+                harassed.removeAll()
+                let response = Message(components: "Got it. Calming down now.")
+                return Action.messageSent(message: response)
+                
             default: break
             }
             

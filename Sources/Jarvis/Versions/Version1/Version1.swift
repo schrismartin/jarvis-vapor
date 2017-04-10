@@ -47,16 +47,19 @@ class V1 {
             
         case .test:
             let user = User(id: "21964096", name: "Chris Martin")
-            let message = Message(components: user, ": @ctually @ll @lligators @cclimate @ll @utum. ", user)
+            let message = Message(components: user, ": @ctually @ll @lligators @cclimate @ll @utum.", user)
             return Action.messageSent(message: message)
             
         case .fuck:
             let user = postback.user
-            let message = Message(components: "No, actually fuck you, ", user, ".")
+            let message = Message(components: "No, actually fuck you,", user)
             return Action.messageSent(message: message)
             
         case .harass(user: let user):
             return Action.register(user: user, category: .harass)
+            
+        case .cease:
+            return Action.cease
             
         case .info(let arg):
             do {
@@ -120,7 +123,7 @@ class V1 {
             "What language are you speaking? Cause it sounds like bullshit.",
             "You're the reason the gene pool needs a lifeguard.",
             "You are proof that evolution CAN go in reverse.",
-            "I don't think you are stupid. You just have a bad luck when thinking.",
+            "I don't think you are stupid. You just have bad luck when thinking.",
             "If I had a face like yours, I'd sue my parents.",
             "So, a thought crossed your mind? Must have been a long and lonely journey.",
             "I don't know what makes you so stupid, but it really works.",
