@@ -30,7 +30,7 @@ struct Message {
     init(payload: MessagePayload) {
         self.content = payload
             .map { $0.textualRepresentation }
-            .joined()
+            .joined(separator: " ")
         
         for case let user as User in payload {
             mentions.append(user)
