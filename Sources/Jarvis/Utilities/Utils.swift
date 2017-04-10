@@ -59,6 +59,7 @@ extension Array {
     /// Remove the first element from an array
     ///
     /// - Returns: Value removed
+    @discardableResult
     mutating func popFirst() -> Element? {
         return count > 0 ? remove(at: 0) : nil
     }

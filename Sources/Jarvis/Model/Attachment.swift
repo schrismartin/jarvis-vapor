@@ -16,6 +16,7 @@ enum AttachmentType: String {
 public struct Attachment {
     var type: AttachmentType
     var users: [User]?
+    var associatedContent: String?
 }
 
 extension Attachment {
@@ -61,5 +62,46 @@ extension Attachment {
         }
         
         return users
+    }
+}
+
+extension Attachment: JSONRepresentable {
+
+    fileprivate func calculateMentionIndices(for content: String) -> [[Int]]? {
+        guard var mentions = users, !mentions.isEmpty, type == .mentions else { return nil }
+        var indices = [[Int]]()
+        var content = content
+        
+        for (index, character) in content.characters.enumerated() where character == "@" {
+            guard let user = mentions.first else { continue }
+            if content.substring(at: index, length: user.textualRepresentation.count) == user.textualRepresentation {
+                mentions.popFirst()
+                indices.append([ index, user.textualRepresentation.count ])
+            }
+        }
+        
+        return indices
+    }
+    
+    public func makeJSON() throws -> JSON {
+        switch type {
+        case .mentions:
+            guard
+                let content = associatedContent,
+                let ids = calculateMentionIndices(for: content),
+                let users = self.users else {
+                throw JarvisError.jsonConversion
+            }
+            
+            let idNode = ids.map { Node($0.map { Node($0) }) }
+            let userIdNode = users.map { Node($0.id) }
+            
+            return JSON([
+                "loci": Node(idNode),
+                "type": Node(type.rawValue),
+                "user_ids": Node(userIdNode)
+            ])
+        }
+        
     }
 }
