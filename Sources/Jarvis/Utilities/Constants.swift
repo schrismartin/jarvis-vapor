@@ -59,7 +59,7 @@ enum Action {
     case likeMessage(id: MessageIdentifier)
     case messageStored
     case none
-    case cease
+    case cease(user: User?)
     
     enum Registration {
         case harass
