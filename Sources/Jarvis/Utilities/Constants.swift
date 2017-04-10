@@ -52,6 +52,13 @@ public enum APIVersion: String {
 
 enum Action {
     case messageSent(message: Message)
+    case register(user: User, category: Registration)
+    case likeMessage(id: MessageIdentifier)
     case messageStored
     case none
+    
+    enum Registration {
+        case harass
+        case encourage
+    }
 }

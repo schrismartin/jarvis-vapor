@@ -46,6 +46,16 @@ public struct User {
     }
 }
 
+extension User: Hashable {
+    public var hashValue: Int {
+        return id.hashValue
+    }
+    
+    public static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+}
+
 extension User: JSONConvertible {
     
     public init(json: JSON) throws {

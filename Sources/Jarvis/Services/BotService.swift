@@ -18,6 +18,9 @@ class BotService {
     public var groupId: String = Utils.getEnvVar(name: "GROUP_ID")
     public var accessToken: String = Utils.getEnvVar(name: "ACCESS_TOKEN")
     
+    public var harassed = Set<User>()
+    public var encouraged = Set<User>()
+    
     private init () {
         // Should only be called by the singleton instance (Bot.current)
     }
@@ -32,7 +35,21 @@ class BotService {
     internal func generateAction(using postback: Postback, version: APIVersion) throws -> Action {
         
         switch version {
-        case .v1: return V1.generateAction(using: postback)
+        case .v1:
+            let action = V1.generateAction(using: postback)
+            
+            switch action {
+            case .register(user: let user, category: let category):
+                switch category {
+                case .encourage:
+                    encouraged.insert(user)
+                case .harass:
+                    harassed.insert(user)
+                }
+            default: break
+            }
+            
+            return action
         default:
             Debug.log("Received API Call targeting \(version.rawValue)")
             throw JarvisError.incorrectVersion
@@ -61,6 +78,16 @@ extension BotService {
         Debug.log("Message attempting to post")
         
         JarvisServer.main.post(body: json, to: url)
+    }
+    
+    public func like(message id: MessageIdentifier) throws {
+        Debug.log("Attempting to like message")
+        let urlString = URLs.root.rawValue + "/messages/\(BotService.current.groupId)/\(id)/like"
+        guard let url = URL(string: urlString) else {
+            throw JarvisError.urlCreation(urlSource: urlString)
+        }
+        
+        JarvisServer.main.post(to: url)
     }
     
 }

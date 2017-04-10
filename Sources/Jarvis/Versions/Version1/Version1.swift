@@ -24,7 +24,7 @@ class V1 {
         
         guard let command = Command(input: postback.message) else {
             Debug.log("User did not invoke the \"jarvis\" keyword")
-            return Action.none
+            return handlePassiveMessage(using: postback)
         }
         
         switch command {
@@ -55,6 +55,12 @@ class V1 {
             let message = Message(components: "No, actually fuck you, ", user, ".")
             return Action.messageSent(message: message)
             
+        case .encourage(user: let user):
+            return Action.register(user: user, category: .encourage)
+            
+        case .harass(user: let user):
+            return Action.register(user: user, category: .harass)
+            
         case .info(let arg):
             do {
                 let info = try GroupInfo(from: GroupInfo.url)
@@ -72,6 +78,41 @@ class V1 {
                 return Action.messageSent(message: message)
             }
         }
+    }
+    
+    fileprivate static func handlePassiveMessage(using postback: Postback) -> Action {
+        let user = postback.user
+        let bot = BotService.current
+        
+        if bot.encouraged.contains(user) {
+            return Action.likeMessage(id: postback.id)
+        }
+        
+        if bot.harassed.contains(user) {
+            let insult = generateInsult()
+            let message = Message(components: insult)
+            return Action.messageSent(message: message)
+        }
+        
+        return Action.none
+    }
+    
+    fileprivate static func generateInsult() -> String {
+        let insults = [
+            "No.",
+            "Stop talking.",
+            "You're killing me.",
+            "Stahp.",
+            "Nobody cares",
+            "Fuck off.",
+            "Leave please.",
+            "Kill yourself.",
+            "If you don't stop talking, I'm going to leave.",
+            "Brilliant. Thank you for your contribution."
+        ]
+        
+        let index = Int(arc4random_uniform(UInt32(insults.count)))
+        return insults[index]
     }
     
 }
