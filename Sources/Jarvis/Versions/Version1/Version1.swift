@@ -55,9 +55,6 @@ class V1 {
             let message = Message(components: "No, actually fuck you, ", user, ".")
             return Action.messageSent(message: message)
             
-        case .encourage(user: let user):
-            return Action.register(user: user, category: .encourage)
-            
         case .harass(user: let user):
             return Action.register(user: user, category: .harass)
             
@@ -84,10 +81,6 @@ class V1 {
         let user = postback.user
         let bot = BotService.current
         
-        if bot.encouraged.contains(user) {
-            return Action.likeMessage(id: postback.id)
-        }
-        
         if bot.harassed.contains(user) {
             let insult = generateInsult()
             let message = Message(components: insult)
@@ -108,7 +101,7 @@ class V1 {
             "Leave please.",
             "Kill yourself.",
             "If you don't stop talking, I'm going to leave.",
-            "Brilliant. Thank you for your contribution."
+            "Brilliant. Such a great contribution."
         ]
         
         let index = randInt(upperBound: insults.count - 1)

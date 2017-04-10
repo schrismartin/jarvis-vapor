@@ -12,12 +12,15 @@ enum URLs {
     case root
     case posts
     case groups
+    case like(channel: GroupIdentifier, message: MessageIdentifier)
     
     var rawValue: String {
         switch self {
         case .root: return "https://api.groupme.com/v3"
         case .posts: return "https://api.groupme.com/v3/bots/post"
         case .groups: return "https://api.groupme.com/v3/groups/\(BotService.current.groupId)"
+        case .like(channel: let channel, message: let id):
+            return "https://api.groupme.com/v3/messages/\(channel)/\(id)/like"
         }
     }
     
@@ -59,6 +62,5 @@ enum Action {
     
     enum Registration {
         case harass
-        case encourage
     }
 }

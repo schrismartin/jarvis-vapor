@@ -83,11 +83,6 @@ public class JarvisServer {
             Debug.log("Sending a message: \(message.content)")
             post(body: try message.makeJSON(), to: url)
             
-        case .register(user: let user, category: let registration):
-            let messageID = postback.id
-            // TODO: Figure out how to better handle cross-class abstraction
-            try? BotService.current.like(message: messageID)
-            
         default:
             break
         }

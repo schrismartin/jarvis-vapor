@@ -19,7 +19,6 @@ class BotService {
     public var accessToken: String = Utils.getEnvVar(name: "ACCESS_TOKEN")
     
     public var harassed = Set<User>()
-    public var encouraged = Set<User>()
     
     private init () {
         // Should only be called by the singleton instance (Bot.current)
@@ -41,10 +40,10 @@ class BotService {
             switch action {
             case .register(user: let user, category: let category):
                 switch category {
-                case .encourage:
-                    encouraged.insert(user)
                 case .harass:
                     harassed.insert(user)
+                    let response = Message(components: "Now harassing", user)
+                    return Action.messageSent(message: response)
                 }
             default: break
             }
@@ -82,7 +81,8 @@ extension BotService {
     
     public func like(message id: MessageIdentifier) throws {
         Debug.log("Attempting to like message")
-        let urlString = URLs.root.rawValue + "/messages/\(BotService.current.groupId)/\(id)/like"
+        let channel = BotService.current.groupId
+        let urlString = URLs.like(channel: channel, message: id).tokenized()
         guard let url = URL(string: urlString) else {
             throw JarvisError.urlCreation(urlSource: urlString)
         }
