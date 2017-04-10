@@ -29,7 +29,7 @@ class V1 {
         
         switch command {
         case .echo(body: var body):
-            body.insert("Echo: ", at: 0)
+            body.insert("Echo:", at: 0)
             let message = Message(payload: body)
             return Action.messageSent(message: message)
             

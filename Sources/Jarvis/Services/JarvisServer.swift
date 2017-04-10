@@ -80,6 +80,7 @@ public class JarvisServer {
         switch action {
         case .messageSent(message: let message):
             let url = URL(from: .posts)
+            Debug.log("Sending a message: \(message.content)")
             post(body: try message.makeJSON(), to: url)
             
         case .register(user: let user, category: let registration):
