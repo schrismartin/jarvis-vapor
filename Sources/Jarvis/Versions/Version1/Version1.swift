@@ -111,7 +111,7 @@ class V1 {
             "Brilliant. Thank you for your contribution."
         ]
         
-        let index = Int(arc4random_uniform(UInt32(insults.count)))
+        let index = randInt(upperBound: insults.count - 1)
         return insults[index]
     }
     

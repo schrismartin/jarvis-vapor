@@ -81,3 +81,11 @@ extension String {
         return substring(with: range)
     }
 }
+
+public func randInt(upperBound: Int) -> Int {
+    #if os(Linux)
+        return Int(random() % (upperBound + 1))
+    #else
+        return Int(arc4random_uniform(UInt32(upperBound)))
+    #endif
+}
