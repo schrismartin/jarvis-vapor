@@ -50,7 +50,15 @@ class BotService {
                     let response = Message(components: "Good try.")
                     return Action.messageSent(message: response)
                 } else {
-                    if let user = user { harassed.remove(user) }
+                    if let user = user {
+                        if let removed = harassed.remove(user) {
+                            let response = Message(components: "I won't harass", removed, "anymore.")
+                            return Action.messageSent(message: response)
+                        } else {
+                            let response = Message(components: "I wasn't harassing", user, "though.")
+                            return Action.messageSent(message: response)
+                        }
+                    }
                     else { harassed.removeAll() }
 
                     let response = Message(components: "Acknowledged.")
