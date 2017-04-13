@@ -80,6 +80,7 @@ public class JarvisServer {
         switch action {
         case .messageSent(message: let message):
             let url = URL(from: .posts)
+            Debug.log("Sending a message: \(message.content)")
             post(body: try message.makeJSON(), to: url)
             
         default:
@@ -110,7 +111,7 @@ extension JarvisServer {
     ///   - url: Destination URL of the endpoint.
     /// - Returns: HTTP Response provided by the endpoint.
     @discardableResult
-    func post(body: BodyRepresentable, headers: [HeaderKey: String] = ["Content-Type": "application/json"], to url: URL) -> Response? {
+    func post(body: BodyRepresentable = Body(), headers: [HeaderKey: String] = ["Content-Type": "application/json"], to url: URL) -> Response? {
         let client = server.client
         return try? client.post(url.absoluteString, headers: headers, body: body)
     }

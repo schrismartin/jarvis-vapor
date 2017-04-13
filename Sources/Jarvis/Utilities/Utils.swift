@@ -59,6 +59,7 @@ extension Array {
     /// Remove the first element from an array
     ///
     /// - Returns: Value removed
+    @discardableResult
     mutating func popFirst() -> Element? {
         return count > 0 ? remove(at: 0) : nil
     }
@@ -79,4 +80,12 @@ extension String {
         let range = Range(uncheckedBounds: (low, high))
         return substring(with: range)
     }
+}
+
+public func randInt(upperBound: Int) -> Int {
+    #if os(Linux)
+        return Int(random() % (upperBound + 1))
+    #else
+        return Int(arc4random_uniform(UInt32(upperBound)))
+    #endif
 }
