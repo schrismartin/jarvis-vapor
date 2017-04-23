@@ -22,7 +22,6 @@ enum Command {
     case unrecognized(command: String)
     case usage(info: String)
     case help
-    case test
     case fuck
     case harass(user: User)
     case info(arg: InfoArg)
@@ -59,7 +58,6 @@ enum Command {
         switch command {
         case "echo": self = .echo(body: commands)
         case "help": self = .help
-        case "test": self = .test
         case "fuck": self = .fuck
         case "cat": self = .cat
         case "kitten": self = .kitten

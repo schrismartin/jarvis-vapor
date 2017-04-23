@@ -28,72 +28,16 @@ class V1 {
         }
         
         switch command {
-        case .echo(body: var body):
-            body.insert("Echo:", at: 0)
-            let message = Message(payload: body)
-            return Action.messageSent(message: message)
-            
-        case .unrecognized(command: let command):
-            let message = Message(components: "Unrecognized command: \(command)")
-            return Action.messageSent(message: message)
-            
-        case .usage(let info):
-            let message = Message(components: "usage: jarvis \(info)")
-            return Action.messageSent(message: message)
-            
-        case .help:
-            let message = Message.welcome
-            return Action.messageSent(message: message)
-            
-        case .test:
-            let user = User(id: "21964096", name: "Chris Martin")
-            let message = Message(components: user, ": @ctually @ll @lligators @cclimate @ll @utum.", user)
-            return Action.messageSent(message: message)
-            
-        case .fuck:
-            let user = postback.user
-            let message = Message(components: "No, actually fuck you,", user)
-            return Action.messageSent(message: message)
-            
-        case .cat:
-            if let cat = Cat() {
-                let message = Message(components: cat.makeImage())
-                return Action.messageSent(message: message)
-            } else {
-                let message = Message(components: "You don't currently have this enabled.")
-                return Action.messageSent(message: message)
-            }
-            
-        case .kitten:
-            if let kitten = Kitten() {
-                let message = Message(components: kitten.makeImage())
-                return Action.messageSent(message: message)
-            } else {
-                let message = Message(components: "You don't currently have this enabled.")
-                return Action.messageSent(message: message)
-            }
-            
-        case .harass(user: let user):
-            return Action.register(user: user, category: .harass)
-            
-        case .cease(user: let user):
-            return Action.cease(user: user)
-            
-        case .info(let arg):
-            guard let info = GroupInfo() else {
-                let message = Message.failed
-                return Action.messageSent(message: message)
-            }
-            
-            switch arg {
-            case .age:
-                return Action.messageSent(message: Message(components: "This group was created at \(info.createdAt)."))
-            case .members:
-                let members = info.members.map { $0.name }.joined(separator: "\n- ")
-                return Action.messageSent(message: Message(components: "This group has \(info.members.count) members:\n- " + members))
-            case .messages:
-                return Action.messageSent(message: Message(components: "This group has sent/received \(info.messageCount) messages."))
-                }
+        case .echo(body: let body): return echo(body: body)
+        case .unrecognized(command: let command): return unrecognized(command: command)
+        case .usage(let info): return usage(info: info)
+        case .help: return help()
+        case .fuck: return fuck(user: postback.user)
+        case .cat: return cat(type: .cat)
+        case .kitten: return cat(type: .kitten)
+        case .harass(user: let user): return harass(user: user)
+        case .cease(user: let user): return cease(user: user)
+        case .info(let arg): return info(arg: arg)
         }
     }
     

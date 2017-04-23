@@ -10,11 +10,24 @@ import Foundation
 import Vapor
 import HTTP
 
-class Cat {
+enum CatType {
+    case cat
+    case kitten
+}
+
+protocol ImageAttachment {
+    var imageURL: URL { get }
+    
+    init?()
+    
+    func makeImage() -> GMImage
+}
+
+class Cat: ImageAttachment {
     
     var imageURL: URL
     
-    init?() {
+    required init?() {
         guard let mashapeKey = Utils.getEnvVar(name: "MASHAPE") else { return nil }
         
         let headers: [HeaderKey: String] = [
@@ -35,11 +48,11 @@ class Cat {
     
 }
 
-class Kitten {
+class Kitten: ImageAttachment {
     
     var imageURL: URL
     
-    init?() {
+    required init?() {
         guard let mashapeKey = Utils.getEnvVar(name: "MASHAPE") else { return nil }
         
         let headers: [HeaderKey: String] = [
