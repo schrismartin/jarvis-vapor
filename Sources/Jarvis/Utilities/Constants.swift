@@ -13,12 +13,16 @@ enum URLs {
     case posts
     case groups
     case like(channel: GroupIdentifier, message: MessageIdentifier)
+    case cat
+    case kitten
     
     var rawValue: String {
         switch self {
         case .root: return "https://api.groupme.com/v3"
         case .posts: return "https://api.groupme.com/v3/bots/post"
         case .groups: return "https://api.groupme.com/v3/groups/\(BotService.current.groupId)"
+        case .cat: return "https://nijikokun-random-cats.p.mashape.com/random"
+        case .kitten: return "https://nijikokun-random-cats.p.mashape.com/random/kitten"
         case .like(channel: let channel, message: let id):
             return "https://api.groupme.com/v3/messages/\(channel)/\(id)/like"
         }
@@ -43,6 +47,7 @@ enum JarvisError: Error {
     case jsonConversion
     case urlCreation(urlSource: String)
     case incorrectVersion
+    case invalidArguments
 }
 
 public enum APIVersion: String {

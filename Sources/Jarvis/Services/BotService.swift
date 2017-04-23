@@ -13,10 +13,10 @@ import HTTP
 class BotService {
     
     public static var current = BotService()
-    public var id: String = Utils.getEnvVar(name: "BOT_ID")
-    public var name: String = Utils.getEnvVar(name: "BOT_NAME")
-    public var groupId: String = Utils.getEnvVar(name: "GROUP_ID")
-    public var accessToken: String = Utils.getEnvVar(name: "ACCESS_TOKEN")
+    public var id = Utils.getEnvVar(name: "BOT_ID")!
+    public var name = Utils.getEnvVar(name: "BOT_NAME") ?? "Jarvis"
+    public var groupId = Utils.getEnvVar(name: "GROUP_ID")!
+    public var accessToken = Utils.getEnvVar(name: "ACCESS_TOKEN")
     
     public var harassed = Set<User>()
     
@@ -90,13 +90,12 @@ extension BotService {
         // Create JSON Payload
         Debug.log("Message preparing to be created")
         let json = try message.makeJSON()
-        let url = URL(from: .posts)
         Debug.log("Message successfully created")
         
         // Send
         Debug.log("Message attempting to post")
         
-        JarvisServer.main.post(body: json, to: url)
+        JarvisServer.main.post(body: json, to: .posts)
     }
     
     public func like(message id: MessageIdentifier) throws {

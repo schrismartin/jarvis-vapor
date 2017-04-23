@@ -90,11 +90,7 @@ extension User: JSONConvertible {
 
 // Add conformance to the MessageComponent protocol
 extension User: MessageComponent {
-    public var textualRepresentation: String {
-        return "@\(name)"
-    }
-    
     public var description: String {
-        return textualRepresentation
+        return "@\(name)"
     }
 }

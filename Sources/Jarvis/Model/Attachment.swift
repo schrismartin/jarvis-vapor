@@ -11,16 +11,25 @@ import Vapor
 
 enum AttachmentType: String {
     case mentions
+    case image
 }
 
 public struct Attachment {
     var type: AttachmentType
     var users: [User]?
     var associatedContent: String?
+    var imageUrl: URL?
+    
+    init(type: AttachmentType, users: [User]? = nil, associatedContent: String? = nil, imageURL: URL? = nil) {
+        self.type = type
+        self.users = users
+        self.associatedContent = associatedContent
+        self.imageUrl = imageURL
+    }
 }
 
 extension Attachment {
-    public init(json: JSON, message: String) throws {
+    public init(json: JSON, message: String?) throws {
         guard
             let str = json["type"]?.string,
             let type = AttachmentType(rawValue: str) else {
@@ -31,8 +40,20 @@ extension Attachment {
         
         switch self.type {
         case .mentions:
+            guard let message = message else { throw JarvisError.invalidArguments }
             users = try? Attachment.parseMentions(using: json, from: message)
+        case .image:
+            imageUrl = try? Attachment.parseImage(using: json)
         }
+    }
+    
+    static func parseImage(using json: JSON) throws -> URL {
+        guard
+            let string = json["url"]?.string,
+            let url = URL(string: string)
+            else { throw JarvisError.jsonConversion }
+        
+        return url
     }
     
     static func parseMentions(using json: JSON, from message: String) throws -> [User] {
@@ -74,9 +95,9 @@ extension Attachment: JSONRepresentable {
         
         for (index, character) in content.characters.enumerated() where character == "@" {
             guard let user = mentions.first else { continue }
-            if content.substring(at: index, length: user.textualRepresentation.count) == user.textualRepresentation {
+            if content.substring(at: index, length: user.description.count) == user.description {
                 mentions.popFirst()
-                indices.append([ index, user.textualRepresentation.count ])
+                indices.append([ index, user.description.count ])
             }
         }
         
@@ -100,6 +121,14 @@ extension Attachment: JSONRepresentable {
                 "loci": Node(idNode),
                 "type": Node(type.rawValue),
                 "user_ids": Node(userIdNode)
+            ])
+            
+        case .image:
+            guard let url = imageUrl else { throw JarvisError.jsonConversion }
+            
+            return JSON([
+                "type": Node(type.rawValue),
+                "url": Node(url.absoluteString)
             ])
         }
         

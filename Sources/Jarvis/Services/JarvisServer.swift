@@ -79,9 +79,8 @@ public class JarvisServer {
         
         switch action {
         case .messageSent(message: let message):
-            let url = URL(from: .posts)
             Debug.log("Sending a message: \(message.content)")
-            post(body: try message.makeJSON(), to: url)
+            post(body: try message.makeJSON(), to: .posts)
             
         default:
             break
@@ -111,9 +110,23 @@ extension JarvisServer {
     ///   - url: Destination URL of the endpoint.
     /// - Returns: HTTP Response provided by the endpoint.
     @discardableResult
-    func post(body: BodyRepresentable = Body(), headers: [HeaderKey: String] = ["Content-Type": "application/json"], to url: URL) -> Response? {
+    func post(body: BodyRepresentable = Body(), headers: [HeaderKey: String] = ["Content-Type": "application/json"], to url: URLs) -> JSON? {
+        let url = URL(from: url)
         let client = server.client
-        return try? client.post(url.absoluteString, headers: headers, body: body)
+        return (try? client.post(url.absoluteString, headers: headers, body: body))?.json
+    }
+    
+    /// Create a POST request and send. This is a layer on top of Vapor's client POST system.
+    ///
+    /// - Parameters:
+    ///   - body: Bytes containing POST data to be sent, generally in JSON format.
+    ///   - headers: POST headers, defaulting to `Content-Type: application/json`.
+    ///   - url: Destination URL of the endpoint.
+    /// - Returns: HTTP Response provided by the endpoint.
+    @discardableResult
+    func post(body: BodyRepresentable = Body(), headers: [HeaderKey: String] = ["Content-Type": "application/json"], to url: URL) -> JSON? {
+        let client = server.client
+        return (try? client.post(url.absoluteString, headers: headers, body: body))?.json
     }
     
     
@@ -121,9 +134,19 @@ extension JarvisServer {
     ///
     /// - Parameter url: Destination URL of the endpoint.
     /// - Returns: HTTP Response provided by the endpoint.
-    func get(from url: URL) -> Response? {
+    func get(from url: URLs, headers: [HeaderKey: String] = [:], query: [String: CustomStringConvertible] = [:], body: BodyRepresentable = Body()) -> JSON? {
+        let url = URL(from: url)
         let client = server.client
-        return try? client.get(url.absoluteString)
+        return (try? client.get(url.absoluteString, headers: headers, query: query, body: body))?.json
+    }
+    
+    /// Create a GET request and send. This is a layer on top of Vapor's client GET system.
+    ///
+    /// - Parameter url: Destination URL of the endpoint.
+    /// - Returns: HTTP Response provided by the endpoint.
+    func get(from url: URL, headers: [HeaderKey: String] = [:], query: [String: CustomStringConvertible] = [:], body: BodyRepresentable = Body()) -> JSON? {
+        let client = server.client
+        return (try? client.get(url.absoluteString, headers: headers, query: query, body: body))?.json
     }
     
 }

@@ -55,6 +55,24 @@ class V1 {
             let message = Message(components: "No, actually fuck you,", user)
             return Action.messageSent(message: message)
             
+        case .cat:
+            if let cat = Cat() {
+                let message = Message(components: cat.makeImage())
+                return Action.messageSent(message: message)
+            } else {
+                let message = Message(components: "You don't currently have this enabled.")
+                return Action.messageSent(message: message)
+            }
+            
+        case .kitten:
+            if let kitten = Kitten() {
+                let message = Message(components: kitten.makeImage())
+                return Action.messageSent(message: message)
+            } else {
+                let message = Message(components: "You don't currently have this enabled.")
+                return Action.messageSent(message: message)
+            }
+            
         case .harass(user: let user):
             return Action.register(user: user, category: .harass)
             
@@ -62,21 +80,20 @@ class V1 {
             return Action.cease(user: user)
             
         case .info(let arg):
-            do {
-                let info = try GroupInfo(from: GroupInfo.url)
-                switch arg {
-                case .age:
-                    return Action.messageSent(message: Message(components: "This group was created at \(info.createdAt)."))
-                case .members:
-                    let members = info.members.map { $0.name }.joined(separator: "\n- ")
-                    return Action.messageSent(message: Message(components: "This group has \(info.members.count) members:\n- " + members))
-                case .messages:
-                    return Action.messageSent(message: Message(components: "This group has sent/received \(info.messageCount) messages."))
-                }
-            } catch {
+            guard let info = GroupInfo() else {
                 let message = Message.failed
                 return Action.messageSent(message: message)
             }
+            
+            switch arg {
+            case .age:
+                return Action.messageSent(message: Message(components: "This group was created at \(info.createdAt)."))
+            case .members:
+                let members = info.members.map { $0.name }.joined(separator: "\n- ")
+                return Action.messageSent(message: Message(components: "This group has \(info.members.count) members:\n- " + members))
+            case .messages:
+                return Action.messageSent(message: Message(components: "This group has sent/received \(info.messageCount) messages."))
+                }
         }
     }
     

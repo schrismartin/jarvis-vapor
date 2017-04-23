@@ -29,12 +29,9 @@ struct GroupInfo {
     
     var messageCount: Int
     
-    init(from url: URL) throws {
-        guard let response = JarvisServer.main.get(from: url), let json = response.json
-            else { throw JarvisError.jsonConversion }
-        
-        do { try self.init(json: json) }
-        catch { throw error }
+    init?() {
+        let json = JarvisServer.main.get(from: GroupInfo.url)!
+        try? self.init(json: json)
     }
 }
 

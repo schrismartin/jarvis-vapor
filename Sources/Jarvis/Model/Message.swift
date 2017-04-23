@@ -19,6 +19,8 @@ struct Message {
     /// List of users to be mentioned in this
     var mentions = [User]()
     
+    var image: GMImage?
+    
     /// Create a Message object using a sequence of components, including
     /// strings and User objects
     ///
@@ -27,20 +29,42 @@ struct Message {
         self.init(payload: components)
     }
     
+    
+    /// This initilsadfoaisdf
+    ///
+    /// - Parameter payload: Message payload
     init(payload: MessagePayload) {
         self.content = payload
-            .map { $0.textualRepresentation }
+            .filter { !($0 is GMImage) }
+            .map { $0.description }
             .joined(separator: " ")
         
         for case let user as User in payload {
             mentions.append(user)
         }
+        
+        for case let image as GMImage in payload {
+            self.image = image
+        }
     }
     
-    fileprivate func generateAttachment() -> Attachment? {
-        guard !mentions.isEmpty else { return nil }
+    
+    /// This function generates an attachment
+    ///
+    /// - Returns: Generated Attachment
+    fileprivate func generateAttachment() -> [Attachment] {
+        var attachments = [Attachment]()
         
-        return Attachment(type: .mentions, users: mentions, associatedContent: content)
+        if !mentions.isEmpty {
+            let mention = Attachment(type: .mentions, users: mentions, associatedContent: content)
+            attachments.append(mention)
+        }
+        
+        if let image = image {
+            attachments.append(image.attachment)
+        }
+        
+        return attachments
     }
 }
 
@@ -74,7 +98,7 @@ extension Message: JSONConvertible {
     
     func makeJSON() throws -> JSON {
         let attachment = generateAttachment()
-        let field: Node = attachment == nil ? .null : Node([try attachment!.makeJSON().node])
+        let field: Node = Node(try attachment.makeJSON().node)
         
         return JSON([
             "text": Node(content),
@@ -112,17 +136,11 @@ extension Message {
 
 /// Marker protocol to allow the concatenation of Strings and
 /// users to create a message with a mention.
-public protocol MessageComponent: CustomStringConvertible {
-    var textualRepresentation: String { get }
-}
+public protocol MessageComponent: CustomStringConvertible { }
 
 
 /// Collection of message components
 public typealias MessagePayload = [MessageComponent]
 
 // Make Strings confirom to the MessageComponent protocol
-extension String: MessageComponent {
-    public var textualRepresentation: String {
-        return self
-    }
-}
+extension String: MessageComponent { }

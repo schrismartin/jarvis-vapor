@@ -17,7 +17,7 @@ enum Insults {
         "Nobody cares",
         "Fuck off.",
         "Leave please.",
-        "Kill yourself.",
+        "I'm sure I speak for everyone when I say that I've never heard anything that dumb. Ever.",
         "If you don't stop talking, I'm going to leave.",
         "Wow. Brilliant. Such a great contribution.",
         "You're trying too hard.",
