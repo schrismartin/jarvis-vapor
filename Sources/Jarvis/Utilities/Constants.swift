@@ -15,6 +15,7 @@ enum URLs {
     case like(channel: GroupIdentifier, message: MessageIdentifier)
     case cat
     case kitten
+    case unchecked(string: String)
     
     var rawValue: String {
         switch self {
@@ -25,11 +26,14 @@ enum URLs {
         case .kitten: return "https://nijikokun-random-cats.p.mashape.com/random/kitten"
         case .like(channel: let channel, message: let id):
             return "https://api.groupme.com/v3/messages/\(channel)/\(id)/like"
+        case .unchecked(string: let url): return url
+            
         }
     }
     
-    func tokenized() -> String {
-        return "\(self.rawValue)?token=\(BotService.current.accessToken)"
+    func tokenized() -> String? {
+        guard let token = BotService.current.accessToken else { return nil }
+        return "\(self.rawValue)?token=\(token)"
     }
 }
 
@@ -45,7 +49,7 @@ extension URL {
 
 enum JarvisError: Error {
     case jsonConversion
-    case urlCreation(urlSource: String)
+    case urlCreation(urlSource: URLs)
     case incorrectVersion
     case invalidArguments
 }
