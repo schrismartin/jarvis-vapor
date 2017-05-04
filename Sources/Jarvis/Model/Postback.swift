@@ -39,16 +39,15 @@ extension Postback: JSONInitializable {
             else { throw JarvisError.jsonConversion }
         
         // Assign captured properties
-        let newAttachments = attachments.flatMap { try? Attachment(json: $0, message: text) }
-        self.attachments = newAttachments
+        self.attachments = attachments.flatMap { try? Attachment(json: $0, message: text) }
         self.created = Date(timeIntervalSince1970: TimeInterval(createdAt))
         self.group = Group(from: groupId)
         self.id = id
-        self.message = Postback.process(content: text, with: newAttachments)
+        self.message = Postback.process(content: text, with: self.attachments)
         
         // Create URL
         guard let url = URL(string: avatarUrl) else {
-            throw JarvisError.urlCreation(urlSource: avatarUrl)
+            throw JarvisError.urlCreation(urlSource: .unchecked(string: avatarUrl))
         }
         
         // Create the user
@@ -91,10 +90,10 @@ extension Postback: JSONInitializable {
                         returnedPayload.append(component.components(separatedBy: " "))
                     }
                     
-//                    guard let user = attachment.users?.first, component.count >= user.name.count else { continue }
-//                     else {
-//                    }
                 }
+                
+            default: continue
+                
             }
             
             return returnedPayload.flatMap { $0.flatMap { return $0.description != "" ? $0 : nil } }

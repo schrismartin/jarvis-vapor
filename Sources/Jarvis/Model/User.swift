@@ -46,6 +46,16 @@ public struct User {
     }
 }
 
+extension User: Hashable {
+    public var hashValue: Int {
+        return id.hashValue
+    }
+    
+    public static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+}
+
 extension User: JSONConvertible {
     
     public init(json: JSON) throws {
@@ -80,11 +90,7 @@ extension User: JSONConvertible {
 
 // Add conformance to the MessageComponent protocol
 extension User: MessageComponent {
-    public var textualRepresentation: String {
-        return "@\(name)"
-    }
-    
     public var description: String {
-        return textualRepresentation
+        return "@\(name)"
     }
 }

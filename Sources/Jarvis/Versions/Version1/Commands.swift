@@ -22,9 +22,12 @@ enum Command {
     case unrecognized(command: String)
     case usage(info: String)
     case help
-    case test
     case fuck
+    case harass(user: User)
     case info(arg: InfoArg)
+    case cease(user: User?)
+    case cat
+    case kitten
     
     enum InfoArg {
         case members
@@ -55,8 +58,24 @@ enum Command {
         switch command {
         case "echo": self = .echo(body: commands)
         case "help": self = .help
-        case "test": self = .test
         case "fuck": self = .fuck
+        case "cat": self = .cat
+        case "kitten": self = .kitten
+        case "cease":
+            if let user = commands.popFirst() as? User {
+                self = .cease(user: user)
+            } else {
+                self = .cease(user: nil)
+            }
+            
+        case "harass":
+            guard let user = commands.popFirst() as? User else {
+                self = .usage(info: "harass [@user]")
+                return
+            }
+            
+            self = .harass(user: user)
+
         case "info":
             guard let first = commands.popFirst(), let arg = InfoArg(rawValue: first) else {
                 self = .usage(info: "info [members/age/messages]")

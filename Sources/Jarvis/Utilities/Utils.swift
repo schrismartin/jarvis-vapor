@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Vapor
 
 #if os(Linux)
     import Glibc
@@ -26,12 +27,8 @@ public struct Utils {
     ///
     /// - Parameter name: Variable name
     /// - Returns: Environment value if variable exists, nil otherwise.
-    public static func getEnvVar(name: String) -> String {
-        guard let rawValue = getenv(name) else {
-            Debug.log("Environment Variable \"\(name)\" could not be initialized.")
-            fatalError("Environment Variable \"\(name)\" could not be initialized.")
-        }
-        
+    public static func getEnvVar(name: String) -> String? {
+        guard let rawValue = getenv(name) else { return nil }
         return String(utf8String: rawValue)!
     }
 }
@@ -49,6 +46,16 @@ public struct Debug {
     public static func log(_ string: String) {
         fputs("\(string)\n", stdout)
         fflush(stdout)
+    }
+    
+    public static func log(json: JSON) {
+        if let json = try? json.serialize(prettyPrint: true) {
+            let data = Data(bytes: json)
+            let string = String(data: data, encoding: .utf8)
+            Debug.log(string!)
+        } else {
+            Debug.log("JSON could not be deserialized")
+        }
     }
     
 }
@@ -80,4 +87,12 @@ extension String {
         let range = Range(uncheckedBounds: (low, high))
         return substring(with: range)
     }
+}
+
+public func randInt(upperBound: Int) -> Int {
+    #if os(Linux)
+        return Int(random() % (upperBound + 1))
+    #else
+        return Int(arc4random_uniform(UInt32(upperBound)))
+    #endif
 }

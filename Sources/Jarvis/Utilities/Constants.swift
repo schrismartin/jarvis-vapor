@@ -12,17 +12,28 @@ enum URLs {
     case root
     case posts
     case groups
+    case like(channel: GroupIdentifier, message: MessageIdentifier)
+    case cat
+    case kitten
+    case unchecked(string: String)
     
     var rawValue: String {
         switch self {
         case .root: return "https://api.groupme.com/v3"
         case .posts: return "https://api.groupme.com/v3/bots/post"
         case .groups: return "https://api.groupme.com/v3/groups/\(BotService.current.groupId)"
+        case .cat: return "https://nijikokun-random-cats.p.mashape.com/random"
+        case .kitten: return "https://nijikokun-random-cats.p.mashape.com/random/kitten"
+        case .like(channel: let channel, message: let id):
+            return "https://api.groupme.com/v3/messages/\(channel)/\(id)/like"
+        case .unchecked(string: let url): return url
+            
         }
     }
     
-    func tokenized() -> String {
-        return "\(self.rawValue)?token=\(BotService.current.accessToken)"
+    func tokenized() -> String? {
+        guard let token = BotService.current.accessToken else { return nil }
+        return "\(self.rawValue)?token=\(token)"
     }
 }
 
@@ -38,8 +49,9 @@ extension URL {
 
 enum JarvisError: Error {
     case jsonConversion
-    case urlCreation(urlSource: String)
+    case urlCreation(urlSource: URLs)
     case incorrectVersion
+    case invalidArguments
 }
 
 public enum APIVersion: String {
@@ -52,6 +64,13 @@ public enum APIVersion: String {
 
 enum Action {
     case messageSent(message: Message)
+    case register(user: User, category: Registration)
+    case likeMessage(id: MessageIdentifier)
     case messageStored
     case none
+    case cease(user: User?)
+    
+    enum Registration {
+        case harass
+    }
 }
