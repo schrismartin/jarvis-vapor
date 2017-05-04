@@ -101,9 +101,11 @@ extension BotService {
     public func like(message id: MessageIdentifier) throws {
         Debug.log("Attempting to like message")
         let channel = BotService.current.groupId
-        let urlString = URLs.like(channel: channel, message: id).tokenized()
-        guard let url = URL(string: urlString) else {
-            throw JarvisError.urlCreation(urlSource: urlString)
+        
+        guard
+            let urlString = URLs.like(channel: channel, message: id).tokenized(),
+            let url = URL(string: urlString) else {
+            throw JarvisError.urlCreation(urlSource: URLs.like(channel: channel, message: id))
         }
         
         JarvisServer.main.post(to: url)

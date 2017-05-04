@@ -10,11 +10,19 @@ import Foundation
 
 extension V1 {
     
+    /// Echo the message back to the user
+    ///
+    /// - Parameter body: Message components that the user sent
+    /// - Returns: Message Sent Action
     static func echo(body: MessagePayload) -> Action {
         let message = Message(payload: body)
         return Action.messageSent(message: message)
     }
     
+    /// Send 
+    ///
+    /// - Parameter command: <#command description#>
+    /// - Returns: <#return value description#>
     static func unrecognized(command: String) -> Action {
         let message = Message(components: "Unrecognized command:", command)
         return Action.messageSent(message: message)

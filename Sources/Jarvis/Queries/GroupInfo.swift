@@ -15,7 +15,7 @@ enum GroupType: String {
 }
 
 struct GroupInfo {
-    static let url = URL(string: URLs.groups.tokenized())!
+    static let urlString = URLs.groups.tokenized()
     
     var id: String
     var name: String
@@ -30,7 +30,11 @@ struct GroupInfo {
     var messageCount: Int
     
     init?() {
-        let json = JarvisServer.main.get(from: GroupInfo.url)!
+        guard let urlString = GroupInfo.urlString,
+            let url = URL(string: urlString),
+            let json = JarvisServer.main.get(from: url)
+            else { return nil }
+        
         try? self.init(json: json)
     }
 }

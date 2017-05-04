@@ -47,7 +47,7 @@ extension Postback: JSONInitializable {
         
         // Create URL
         guard let url = URL(string: avatarUrl) else {
-            throw JarvisError.urlCreation(urlSource: avatarUrl)
+            throw JarvisError.urlCreation(urlSource: .unchecked(string: avatarUrl))
         }
         
         // Create the user
