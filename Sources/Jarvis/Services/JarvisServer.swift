@@ -144,6 +144,16 @@ extension JarvisServer {
     ///
     /// - Parameter url: Destination URL of the endpoint.
     /// - Returns: HTTP Response provided by the endpoint.
+    func getString(from url: URLs, headers: [HeaderKey: String] = [:], query: [String: CustomStringConvertible] = [:], body: BodyRepresentable = Body()) -> Bytes? {
+        let url = URL(from: url)
+        let client = server.client
+        return (try? client.get(url.absoluteString, headers: headers, query: query, body: body))?.body.bytes
+    }
+    
+    /// Create a GET request and send. This is a layer on top of Vapor's client GET system.
+    ///
+    /// - Parameter url: Destination URL of the endpoint.
+    /// - Returns: HTTP Response provided by the endpoint.
     func get(from url: URL, headers: [HeaderKey: String] = [:], query: [String: CustomStringConvertible] = [:], body: BodyRepresentable = Body()) -> JSON? {
         let client = server.client
         return (try? client.get(url.absoluteString, headers: headers, query: query, body: body))?.json

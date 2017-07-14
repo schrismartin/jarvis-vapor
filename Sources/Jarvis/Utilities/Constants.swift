@@ -15,19 +15,35 @@ enum URLs {
     case like(channel: GroupIdentifier, message: MessageIdentifier)
     case cat
     case kitten
+    case inspirobot
     case unchecked(string: String)
     
     var rawValue: String {
+        
         switch self {
-        case .root: return "https://api.groupme.com/v3"
-        case .posts: return "https://api.groupme.com/v3/bots/post"
-        case .groups: return "https://api.groupme.com/v3/groups/\(BotService.current.groupId)"
-        case .cat: return "https://nijikokun-random-cats.p.mashape.com/random"
-        case .kitten: return "https://nijikokun-random-cats.p.mashape.com/random/kitten"
+            
+        case .root:
+            return "https://api.groupme.com/v3"
+            
+        case .posts:
+            return "https://api.groupme.com/v3/bots/post"
+            
+        case .groups:
+            return "https://api.groupme.com/v3/groups/\(BotService.current.groupId)"
+            
+        case .cat:
+            return "https://nijikokun-random-cats.p.mashape.com/random"
+            
+        case .kitten:
+            return "https://nijikokun-random-cats.p.mashape.com/random/kitten"
+            
         case .like(channel: let channel, message: let id):
             return "https://api.groupme.com/v3/messages/\(channel)/\(id)/like"
-        case .unchecked(string: let url): return url
             
+        case .inspirobot:
+            return "http://inspirobot.me/api?generate=true"
+            
+        case .unchecked(string: let url): return url
         }
     }
     

@@ -21,6 +21,7 @@ protocol ImageAttachment {
     init?()
     
     func makeImage() -> GMImage
+    func makeLink() -> MessageComponent
 }
 
 class Cat: ImageAttachment {
@@ -46,6 +47,10 @@ class Cat: ImageAttachment {
         return GMImage(url: imageURL)
     }
     
+    func makeLink() -> MessageComponent {
+        return imageURL.absoluteString
+    }
+    
 }
 
 class Kitten: ImageAttachment {
@@ -69,6 +74,10 @@ class Kitten: ImageAttachment {
     
     func makeImage() -> GMImage {
         return GMImage(url: imageURL)
+    }
+    
+    func makeLink() -> MessageComponent {
+        return imageURL.absoluteString
     }
     
 }

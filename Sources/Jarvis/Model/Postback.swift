@@ -55,7 +55,7 @@ extension Postback: JSONInitializable {
             id: userId,
             name: name,
             avatarUrl: url,
-            type: UserType(rawValue: senderType)
+            type: UserType(fromString: senderType)
         )
     }
     

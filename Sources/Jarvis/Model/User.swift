@@ -16,12 +16,14 @@ public enum UserType: String {
     case bot
     case other
     
-    public init(rawValue: String) {
-        switch rawValue {
-        case "user": self = .user
-        case "bot": self = .bot
-        default: self = .other
+    public init(fromString string: String) {
+        
+        guard let type = UserType(rawValue: string) else {
+            self = .other
+            return
         }
+        
+        self = type
     }
 }
 
@@ -68,7 +70,7 @@ extension User: JSONConvertible {
         }
         
         // Create optional/intermediary fields
-        let type = UserType(rawValue: json["sender_type"]?.string ?? "user")
+        let type = UserType(fromString: json["sender_type"]?.string ?? "user")
         let avatarUrl = URL(string: json["avatar_url"]?.string ?? "")
         let muted = json["muted"]?.bool
         
